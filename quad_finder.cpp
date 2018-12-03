@@ -17,6 +17,8 @@
 
 
 int main(int argc, char** argv){
+  
+  // Load the ilbrary
   ifstream descriptorReader("/mnt/c/Users/James/Desktop/imgs/descriptors.txt");
   string line;
   cv::Mat descriptorLib(1,128,CV_8UC1);
@@ -50,6 +52,32 @@ int main(int argc, char** argv){
       continue;
     }
     descriptorLib.push_back(row);
+
+
+    // Grab image (this will be ros in the future)
+    cv::Mat img = imread("/mnt/c/Users/James/Desktop/imgs/verification/img.jpg");
+    cv::Mat imgGray;
+    cv::cvtColor(img,imgGray,cv::COLOR_BGR2GRAY);
+
+    std::vector<cv::KeyPoint> keypoints;    
+    sifter->detect( imgGray, keypoints);
+    //-- Step 2: Calculate descriptors (feature vectors)    
+    cv::Mat descriptors;    
+    sifter->compute( imgGray, keypoints, descriptors );
+
+    cv::BFMatcher matcher;
+    std::vector< cv::DMatch > matches;
+    matcher.match( descriptors, descriptorLib, matches );
+    
+    std::vector<cv::KeyPoint> kpMatched; 
+    for(int i=0;i<matches.size();i++){
+      kpMatched.push_back(keypoints[matches[i].queryIdx]);
+    }
+
+    cv::Mat imgKp;
+    cv::drawKeypoints(imgGray,kpMatched,imgKp);
+    imshow("Keypoints",imgKp);
+
   }
 
 
