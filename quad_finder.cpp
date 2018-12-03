@@ -1,4 +1,16 @@
-
+//Some code borrowed from here: https://stackoverflow.com/questions/27533203/how-do-i-use-sift-in-opencv-3-0-with-c
+#include <cstdlib>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/xfeatures2d.hpp>
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <math.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <vector>
 
 
 
